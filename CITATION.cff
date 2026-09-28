@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: Please cite the dated version of this study that you used.
+title: 'What ternary keeps, and what it loses: an independent evaluation of Prism ML''s Bonsai 27B models'
+type: report
+authors:
+  - name: Tsotchke Corporation
+date-released: '2026-09-28'
+version: 1.0.0
+url: https://github.com/Tsotchke-Corporation/bonsai-fidelity-study
+license: Apache-2.0

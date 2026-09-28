@@ -1,0 +1,9 @@
+GeoRefine Bonsai fidelity study
+Copyright 2026 Tsotchke Corporation
+
+The report, figures, result tables and accompanying analysis scripts in this
+package are licensed under the Apache License, Version 2.0. See LICENSE.
+
+Prism ML and Qwen model weights are not included. Prism ML and Qwen names are
+used to identify the independently evaluated artifacts; neither organization
+endorses this study.
