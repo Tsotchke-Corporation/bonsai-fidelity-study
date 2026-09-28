@@ -1,6 +1,6 @@
 # Methods and statistical reading guide
 
-This supplement describes the **25 September 2026 snapshot**. It separates artifact identity, task scoring, internal probes and repair studies. The source run plan and amendments were written before the final reported scores; [Provenance](PROVENANCE.md) binds them to receipts. A public raw-data release remains to be completed.
+This supplement describes the **25 September 2026 snapshot**. It separates artifact identity, task scoring, internal probes and repair studies. [Quality gates](QUALITY_GATES.md) explains each GeoRefine threshold and Bonsai-2's result in plain language. The source run plan and amendments were written before the final reported scores; [Provenance](PROVENANCE.md) binds them to receipts. Full raw-generation traces remain internal.
 
 ## 1. Artifacts and runtime
 

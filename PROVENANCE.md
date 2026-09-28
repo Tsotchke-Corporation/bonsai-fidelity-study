@@ -5,6 +5,7 @@
 - [`data/results.json`](data/results.json): pinned model/runtime identifiers, artifact SHA-256 values, aggregate measurements and SHA-256 values of the internal source receipts used to assemble them. Receipt identifiers contain no machine-local paths or credentials.
 - [`data/paired_outcomes.csv`](data/paired_outcomes.csv): **5,403 response-free rows** of paired correctness bits. It covers reasoning-off GSM8K strict/flexible and IFEval strict, plus thinking-enabled GSM8K strict/flexible, IFEval strict/loose, HumanEval+ and MBPP+. Item identifiers are SHA-256 digests of source document hashes or task IDs; prompt text, generated text, code and reasoning traces are omitted. `analysis_order` preserves the ordering needed to reproduce the study's seeded bootstrap exactly. Run [`scripts/recompute_ci.py`](scripts/recompute_ci.py) to calculate the nine paired intervals from this file with Python's standard library.
 - [`data/sae_layers.csv`](data/sae_layers.csv): the 63 deciding-layer rare-feature survival values and standard errors for Bonsai-2 and the same-run Q8_0 control. This allows independent recomputation of the reported minima against GeoRefine's 0.975 threshold. It is a parent-coordinate readout, not a universal behavior verdict.
+- [`QUALITY_GATES.md`](QUALITY_GATES.md) and [`figures/sae_survival.svg`](figures/sae_survival.svg): the threshold-by-threshold explanation and a plot generated from the published 63-layer table.
 
 The compact public data were derived from the 25 September frozen samples and receipts. The original source summary digests are listed in `source_receipt_sha256` inside `data/results.json`; the two public CSV digests appear there as well. The raw analysis was not rerun on GPUs for this publication package.
 
@@ -21,6 +22,7 @@ The compact public data were derived from the 25 September frozen samples and re
 | Output-distribution census | `census` | `results.json → parent_relative_census` |
 | Rare-feature readout and Q8 control | `sae_ladder` | `results.json → sae`; `sae_layers.csv` |
 | Small teacher-relative gates | `behavior_gates` | `results.json → behavior_gates` |
+| Chat and continuation probe detail | `chat_probe_detail`, `continuation_probe_detail` | `results.json → quality_gates`; [gate definitions](QUALITY_GATES.md) |
 | Separate 1.7B repair bed | `bed_before`, `bed_after_scale_training`, `bed_positive_control`, `bed_after_behavior` | `results.json → bed_1p7b_repair` |
 
 The study's source reports were in the internal Selene workspace. Their frozen SHA-256 values are:

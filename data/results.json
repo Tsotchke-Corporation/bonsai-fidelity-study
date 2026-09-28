@@ -94,6 +94,49 @@
     "top1": 0.9887279843444227,
     "top5_overlap": 0.9875851326959241
   },
+  "quality_gates": {
+    "attribution": {
+      "status": "unmeasured"
+    },
+    "chat": {
+      "failed_probes": 1,
+      "kl_max_allowed": 1.0,
+      "l1_max_allowed": 1.0,
+      "max_kl": 1.1578007936477661,
+      "max_l1": 0.9720976948738098,
+      "n_probes": 15,
+      "parent_top_rank": 12,
+      "parent_top_rank_max_allowed": 5,
+      "passed": false
+    },
+    "comprehensibility": {
+      "failed_probes": 1,
+      "max_failed_fraction": 0.25,
+      "n_probes": 8,
+      "passed": true,
+      "score": 0.8299,
+      "threshold": 0.72
+    },
+    "derived_behavior_and": {
+      "independent_measurement": false,
+      "passed": false
+    },
+    "instrument": "GeoRefine parent-preservation criteria; not Prism release criteria",
+    "parent_continuation": {
+      "n_probes": 8,
+      "parent_self_score": 0.9284,
+      "passed": false,
+      "score": 0.7848,
+      "sequence_kl": 0.359425,
+      "sequence_top1": 0.8047875,
+      "threshold": 0.85
+    },
+    "registered_capability_margin": {
+      "lower_ci_must_exceed_percentage_points": -2.0,
+      "reasoning_off_gsm8k_passed": false,
+      "reasoning_off_ifeval_passed": false
+    }
+  },
   "reasoning_off": {
     "gsm8k:flexible-extract:exact_match": {
       "acc": 0.9522365428354814,
@@ -155,6 +198,8 @@
     "bed_positive_control": "18518b0050b0e065e70f741ebaa93987a152d63043c78c49c10efaba5d03b059",
     "behavior_gates": "36f677792eac6fafdfd973bec2c49622a74716e2d376823f209994cc0920a731",
     "census": "cd8a70cf7d7d85fbd2532ade4250eaaa7cd7bb739ca1ed08f35a1045a93216d7",
+    "chat_probe_detail": "c78c1e86d388a69dc52bc9b3091f2fd034072d5c3bd3a695349ddc33d9eb5c91",
+    "continuation_probe_detail": "0db92aa67a3ac1a6a9e202667b6f4716a0fde594d3010e024a1c9171e87a3a70",
     "mmlu_pair": "adc1ad0c3e17ae51edd0d01f26fe0b90906777b91d84abc49a0c19dd6a4caafb",
     "mmmu_pair": "6552b4d47f2bba564cfd9a8b360181d9b98429a968c1af8e2d3979400b584a27",
     "proxy_parity": "8df214b3b73d1709829855dce541c011cad4bc59f6e0634e4a26e1f3b41e81ec",
@@ -165,6 +210,7 @@
     "thinking_on_analysis": "5c86435b800fcc9d91f5dbe52620654f0eac07e99443a454fb3a27c299522c06"
   },
   "study_date": "2026-09-25",
+  "study_version": "1.0.1",
   "thinking_on": {
     "gsm8k:flexible-extract:exact_match": {
       "b2": 0.9566666666666667,

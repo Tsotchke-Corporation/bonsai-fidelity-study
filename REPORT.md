@@ -6,7 +6,7 @@ Tsotchke Corporation / GeoRefine · measurement window 22–25 September 2026
 
 ## Abstract
 
-Prism ML's Bonsai work shows how far trained low-bit models can push inference economics. We compared its July 1-bit and ternary 27B releases with their Qwen3.6-27B parent, and its September Bonsai-2 ternary 27B release with its Qwen3.8-27B parent. Bonsai-2's PQ2_0 language GGUF was 7.21 GB, versus 53.81 GB for Prism's F16 GGUF of the same tensors. On one RTX PRO 6000 Blackwell, controlled batch-1 decode was 126.54 tokens/s for PQ2_0 versus 27.74 tokens/s for a separate 54.66 GB BF16 GGUF of the parent. In a verified reasoning-off, same-runtime evaluation, Bonsai-2 trailed its parent by 2.0 percentage points on GSM8K strict accuracy (95% paired bootstrap interval −3.0 to −1.1). In four tested thinking-enabled tasks, none of the paired differences was statistically resolved; their intervals still admit losses. On our parent-coordinate internal-feature readout, Bonsai-2's worst-layer rare-feature survival was 0.8022 versus a stated 0.975 GeoRefine criterion. These measures answer different questions. The work is an efficiency achievement with remaining parent-relative differences, not a general claim that the model is unusable or that all low-bit training fails.
+Prism ML's Bonsai work shows how far trained low-bit models can push inference economics. We compared its July 1-bit and ternary 27B releases with their Qwen3.6-27B parent, and its September Bonsai-2 ternary 27B release with its Qwen3.8-27B parent. Bonsai-2's PQ2_0 language GGUF was 7.21 GB, versus 53.81 GB for Prism's F16 GGUF of the same tensors. On one RTX PRO 6000 Blackwell, controlled batch-1 decode was 126.54 tokens/s for PQ2_0 versus 27.74 tokens/s for a separate 54.66 GB BF16 GGUF of the parent. In a verified reasoning-off, same-runtime evaluation, Bonsai-2 trailed its parent by 2.0 percentage points on GSM8K strict accuracy (95% paired bootstrap interval −3.0 to −1.1). In four tested thinking-enabled tasks, none of the paired differences was statistically resolved; their intervals still admit losses. Against GeoRefine's **parent-preservation gates**, Bonsai-2's worst-layer rare-feature survival was **0.8022 versus a 0.975 criterion**; the chat-start and parent-continuation probes also failed, while comprehensibility passed. The work is an efficiency achievement with measured parent-relative differences, not a general claim that the model is unusable or that all low-bit training fails. Our thresholds and their limits are explained [gate by gate](QUALITY_GATES.md).
 
 ## 1. Questions and evidence labels
 
@@ -26,6 +26,21 @@ This is an observational comparison of released checkpoints, not a controlled st
 The September PQ2_0 file is 7.47× smaller than Prism's 53,808,408,928-byte F16 GGUF of the **same 851 tensors**. PTQ1_0 is 9.05× smaller. Those are whole-file ratios, not bits per every parameter. The 931,145,856-byte BF16 vision projector is separate from the GGUF. The MLX pack includes vision and has a different size denominator. See [Methods §1](METHODS.md#1-artifacts-and-runtime) and [Provenance](PROVENANCE.md).
 
 Prism describes Bonsai-2 as a trained, rotated ternary model. We verified its model files and used Prism's `llama.cpp` fork at `0324c66521960d67aa7da8687fb1453a79a6565c` for the controlled comparisons. The developer Q2_0 file can load in stock llama.cpp while missing Prism's activation transform; it is not a valid substitute for these measurements. [Prism's developer card](https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf-dev) documents that risk.
+
+## Quality gate verdict: what failed, and what that means
+
+GeoRefine's quality gates ask whether a compressed artifact **preserves its BF16 parent**, beyond scoring well on a few benchmark tasks. They are our declared criteria, not Prism ML's release criteria. Bonsai-2 has clear efficiency advantages and passes our small comprehensibility probe, but it does **not** meet the parent-preservation conditions we would require for our own artifact:
+
+| Gate | What it measures | Required | Bonsai-2 | Outcome |
+|---|---|---:|---:|---|
+| Rare parent SAE features | Worst survival across layers 1–63 in the parent's feature coordinates | ≥0.975 | **0.8022**, L46; 63/63 layers below bar | **Fail**; Q8_0 same-run control 0.9820 passes |
+| Assistant-start fidelity | 15 small next-token distribution probes, each bounded by KL, L1 and parent-top-token rank | KL ≤1.0, L1 ≤1.0, rank ≤5 | **1/15 fails**; worst KL 1.1578, parent token rank 12 | **Fail**, narrow probe |
+| Parent-continuation fidelity | Eight greedy parent-continuation prompts, weighted for token agreement, distribution shift and repetition | score ≥0.85 | **0.7848**; parent self-score 0.9284 | **Fail**; not a factual quiz |
+| Comprehensibility | Eight generated-text probes | mean ≥0.72; ≤25% fail | **0.8299**, 1/8 fails | **Pass** |
+| Registered task non-inferiority | Paired 95% CI lower bound on candidate-minus-parent GSM8K and IFEval, reasoning off | **>−2.0 pp** on both | GSM8K **−2.0 [−3.0, −1.1]**; IFEval **−3.3 [−6.7, 0.0]** | **Fail** |
+| Attribution | Separate attribution-preservation probe | required for a full internal certificate | not run | **Unmeasured** |
+
+The instrument's “coherence” label is only the logical **AND** of chat, continuation and comprehensibility. It fails because two components fail; it is **not** a general claim that Bonsai-2 cannot chat coherently. The SAE gate likewise reads the parent’s feature basis; trained re-encoding can affect that comparison. A separate 12/12 needle-retrieval floor passed to about 97k tokens. No combined six-component `m2_recertify` certificate was issued because attribution was not run and SAE was assessed in a separate frozen readout. [Quality gates](QUALITY_GATES.md) gives the definitions, controls, per-layer figure and interpretation in full.
 
 ## 3. Efficiency: unusually strong, with a narrow benchmark scope
 

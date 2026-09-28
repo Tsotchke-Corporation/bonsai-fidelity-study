@@ -57,6 +57,19 @@ class PublicDataTests(unittest.TestCase):
                                DATA["sae"]["bonsai2_min_survival"], places=12)
         self.assertAlmostEqual(min(float(r["q8_survival"]) for r in rows),
                                DATA["sae"]["q8_min_survival"], places=12)
+        self.assertEqual(sum(float(r["bonsai2_survival"]) < 0.975 for r in rows), 63)
+        self.assertEqual(sum(float(r["q8_survival"]) < 0.975 for r in rows), 0)
+
+    def test_quality_gate_ledger_distinguishes_failure_and_unmeasured(self):
+        gates = DATA["quality_gates"]
+        self.assertGreater(gates["chat"]["max_kl"], gates["chat"]["kl_max_allowed"])
+        self.assertGreater(gates["chat"]["parent_top_rank"],
+                           gates["chat"]["parent_top_rank_max_allowed"])
+        self.assertLess(gates["parent_continuation"]["score"],
+                        gates["parent_continuation"]["threshold"])
+        self.assertGreater(gates["comprehensibility"]["score"],
+                           gates["comprehensibility"]["threshold"])
+        self.assertEqual(gates["attribution"]["status"], "unmeasured")
 
     def test_public_package_links_and_local_data(self):
         for path in ROOT.glob("*.md"):
